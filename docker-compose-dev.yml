@@ -1,0 +1,27 @@
+version: '3'
+services:
+  # container, responsible for hosting dev server
+  web:
+    # image
+    build:
+      # where to get files from - current directory
+      context: .
+      # file to build image
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      # map current folder:/app folder inside container
+      - .:/app
+  # create second service to run tests
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes: 
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]
+
+    
